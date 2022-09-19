@@ -1,0 +1,6 @@
+[submodule "navigator"]
+	path = navigator
+	url = git@github-ironaddicteddog:DappioWonderland/navigator.git
+[submodule "gateway"]
+	path = gateway
+	url = git@github-ironaddicteddog:DappioWonderland/gateway.git
