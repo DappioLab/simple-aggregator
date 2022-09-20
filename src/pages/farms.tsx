@@ -11,10 +11,9 @@ export const Farms: NextPage = (props) => {
 
   useEffect(() => {
     const farmsWithPool = farms.filter((farm) => {
-      return poolSetWithLpMintKey.get(
+      return poolSetWithLpMintKey.has(
         (farm.farmInfo as raydium.FarmInfo).poolLpTokenAccount.mint.toString()
       );
-      // return Boolean(result);
     });
     setFarmsWithPool(farmsWithPool);
   }, [poolSetWithLpMintKey]);

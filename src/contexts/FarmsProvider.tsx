@@ -42,13 +42,15 @@ export const FarmsProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setFarms(wrappers);
     });
 
-    let poolSet = new Map<string, IPoolInfoWrapper>();
     const getAllPoolWrappers = async () => {
       const poolWrappers = await raydium.infos.getAllPoolWrappers(connection);
-      poolWrappers.forEach((wrapper) => {
-        poolSet.set(wrapper.poolInfo.lpMint.toString(), wrapper);
-      });
-      return poolSet;
+
+      return new Map<string, IPoolInfoWrapper>(
+        poolWrappers.map((wrapper) => [
+          wrapper.poolInfo.lpMint.toString(),
+          wrapper,
+        ])
+      );
     };
 
     getAllPoolWrappers().then((poolSetResult) => {
