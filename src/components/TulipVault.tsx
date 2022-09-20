@@ -11,46 +11,43 @@ import {
   IFarmInfoWrapper,
   IPoolInfoWrapper,
   raydium,
+  tulip,
 } from "../../navigator/src";
 import {
   AddLiquidityParams,
   GatewayBuilder,
   HarvestParams,
   RemoveLiquidityParams,
-  StakeParams,
+  DepositParams,
   SupportedProtocols,
   SwapParams,
-  UnstakeParams,
+  WithdrawParams,
 } from "../../gateway/ts";
 import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
-interface FarmProps {
-  farm: raydium.FarmInfoWrapper;
+interface VaultProps {
+  vault: tulip.VaultInfoWrapper;
   pool: raydium.PoolInfoWrapper;
 }
 
-export const Farm: FC<FarmProps> = (props: FarmProps) => {
+export const Vault: FC<VaultProps> = (props: VaultProps) => {
   const [apr, setApr] = useState(0);
   const { connection } = useConnection();
   const wallet = useWallet();
   const { getUserSOLBalance } = useUserSOLBalanceStore();
 
   // Get Farm
-  const farm = props.farm;
-  const farmInfo = farm.farmInfo;
-  const farmId = farmInfo.farmId.toString();
-  const lpMint = farmInfo.poolLpTokenAccount.mint.toString();
+  const vault = props.vault;
+  const vaultInfo = vault.vaultInfo as tulip.VaultInfo;
+  const vaultId = vaultInfo.vaultId.toString();
+  const lpMint = vaultInfo.base.underlyingMint.toString();
   const pool = props.pool;
   const poolInfo = pool.poolInfo;
 
   useEffect(() => {
-    const getApr = async () => {
-      // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getAprs(5, 1, 2);
-      return aprs.length > 1 ? aprs[1] : aprs[0];
-    };
-    getApr().then((apr) => setApr(apr));
+    const apr = vault.getApr();
+    setApr(apr);
   }, []);
 
   const zapIn = useCallback(async () => {
@@ -93,10 +90,10 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       protocol: SupportedProtocols.Raydium,
       poolId: poolInfo.poolId,
     };
-    const stakeParams: StakeParams = {
-      protocol: SupportedProtocols.Raydium,
-      farmId: farmInfo.farmId,
-      version: farmInfo.version,
+    const depositParams: DepositParams = {
+      protocol: SupportedProtocols.Tulip,
+      vaultId: vaultInfo.vaultId,
+      depositAmount: 0, // Notice: amount will auto-update in gateway state after add liquidity
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -104,19 +101,20 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount1 = gateway.params.swapMinOutAmount.toNumber();
-    
+    console.log(minOutAmount1);
 
     // 2nd Swap
     swapParams2.amount = minOutAmount1 / 2;
     await gateway.swap(swapParams2);
     const minOutAmount2 = gateway.params.swapMinOutAmount.toNumber();
+    console.log(minOutAmount2);
 
     // Add Liquidity
     addLiquidityParams.tokenInAmount = minOutAmount2;
     await gateway.addLiquidity(addLiquidityParams);
 
     // Stake
-    await gateway.stake(stakeParams);
+    await gateway.deposit(depositParams);
 
     await gateway.finalize();
     const txs = gateway.transactions();
@@ -181,42 +179,33 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       anchor.AnchorProvider.defaultOptions()
     );
 
-    // Get share amount
-    const ledgerKey = await raydium.infos.getFarmerId(
-      farmInfo,
-      provider.wallet.publicKey,
-      farmInfo.version
+    const depositorId = tulip.infos.getDepositorId(
+      vaultInfo.vaultId,
+      wallet.publicKey
     );
-    const ledger = (await raydium.infos.getFarmer(
+    const depositor = (await tulip.infos.getDepositor(
       connection,
-      ledgerKey,
-      farmInfo.version
-    )) as raydium.FarmerInfo;
-    const shareAmount = ledger.amount;
-    const { tokenAAmount } = await pool.getTokenAmounts(shareAmount);
+      depositorId
+    )) as tulip.DepositorInfo;
+    const shareAmount = Number(depositor.shares);
 
-    const harvestParams: HarvestParams = {
-      protocol: SupportedProtocols.Raydium,
-      farmId: farmInfo.farmId,
-      version: farmInfo.version,
-    };
-    const unstakeParams: UnstakeParams = {
-      protocol: SupportedProtocols.Raydium,
-      farmId: farmInfo.farmId,
-      shareAmount,
-      version: farmInfo.version,
+    const withdrawParams: WithdrawParams = {
+      protocol: SupportedProtocols.Tulip,
+      vaultId: vaultInfo.vaultId,
+      withdrawAmount: shareAmount,
     };
     const removeLiquidityParams: RemoveLiquidityParams = {
       protocol: SupportedProtocols.Raydium,
       poolId: poolInfo.poolId,
     };
 
+    const { pcAmount } = await pool.getCoinAndPcAmount(shareAmount);
     // tokenB to tokenA
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenBMint,
       toTokenMint: poolInfo.tokenAMint,
-      amount: tokenAAmount, // swap coin to pc
+      amount: pcAmount, // swap coin to pc
       slippage: 3,
     };
 
@@ -233,8 +222,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
 
     const gateway = new GatewayBuilder(provider);
 
-    await gateway.harvest(harvestParams);
-    await gateway.unstake(unstakeParams);
+    await gateway.withdraw(withdrawParams);
     await gateway.removeLiquidity(removeLiquidityParams);
 
     // 1st Swap
@@ -294,7 +282,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   return (
     <tr>
       <th>
-        {farmId.slice(0, 5)}...{farmId.slice(farmId.length - 5)}
+        {vaultId.slice(0, 5)}...{vaultId.slice(vaultId.length - 5)}
       </th>
       <td>
         {lpMint.slice(0, 5)}...{lpMint.slice(lpMint.length - 5)}

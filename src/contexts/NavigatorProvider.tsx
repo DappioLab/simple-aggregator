@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { raydium, orca } from "../../navigator/src";
+import { raydium, orca, tulip } from "../../navigator/src";
 
 export interface NavigatorContextState {
   raydiumFarms: raydium.FarmInfoWrapper[];
@@ -17,17 +17,15 @@ export interface NavigatorContextState {
   orcaFarms: orca.FarmInfoWrapper[];
   orcaPoolSetWithLpMintKey: Map<string, orca.PoolInfoWrapper>;
 
-  // TODO: Add Tulip vaults
-  // tulipVaults: tulip.VaultInfoWrapper[];
-  // tulipPoolSetWithLpMintKey: Map<string, tulip.PoolInfoWrapper>;
+  tulipVaults: tulip.VaultInfoWrapper[];
 }
 
-export const FarmsContext = createContext<NavigatorContextState>(
+export const NavigatorContext = createContext<NavigatorContextState>(
   {} as NavigatorContextState
 );
 
-export function useFarms(): NavigatorContextState {
-  return useContext(FarmsContext);
+export function useNavigator(): NavigatorContextState {
+  return useContext(NavigatorContext);
 }
 
 export const NavigatorProvider: FC<{ children: ReactNode }> = ({
@@ -46,7 +44,9 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
     Map<string, orca.PoolInfoWrapper>
   >({} as Map<string, orca.PoolInfoWrapper>);
 
-  // TODO: Add useState for Tulip
+  // TODO: Add useState for Orca
+
+  const [tulipVaults, setTulipVaults] = useState<tulip.VaultInfoWrapper[]>([]);
 
   useEffect(() => {
     {
@@ -104,10 +104,21 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
   }, []);
 
   // TODO: Add useEffect for Orca
-  // TODO: Add useEffect for Tulip
+
+  useEffect(() => {
+    const getAllVaultsWrappers = async () => {
+      return (await tulip.infos.getAllVaultWrappers(
+        connection
+      )) as tulip.VaultInfoWrapper[];
+    };
+
+    getAllVaultsWrappers().then((wrappers) => {
+      setTulipVaults(wrappers);
+    });
+  }, []);
 
   return (
-    <FarmsContext.Provider
+    <NavigatorContext.Provider
       // TODO: Add value for Orca
       // TODO: Add value for Tulip
       value={{
@@ -115,9 +126,10 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
         raydiumPoolSetWithLpMintKey,
         orcaFarms,
         orcaPoolSetWithLpMintKey,
+        tulipVaults,
       }}
     >
       {children}
-    </FarmsContext.Provider>
+    </NavigatorContext.Provider>
   );
 };

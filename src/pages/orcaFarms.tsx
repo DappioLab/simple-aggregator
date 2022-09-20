@@ -1,4 +1,4 @@
-import { useFarms } from "contexts/NavigatorProvider";
+import { useNavigator } from "contexts/NavigatorProvider";
 import { Farm } from "../components/OrcaFarm";
 import { NextPage } from "next";
 import Head from "next/head";

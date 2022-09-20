@@ -1,4 +1,4 @@
-import { useFarms } from "contexts/NavigatorProvider";
+import { useNavigator } from "contexts/NavigatorProvider";
 import { Farm } from "../components/RaydiumFarm";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -6,7 +6,7 @@ import { IFarmInfoWrapper, raydium } from "../../navigator/src";
 import { useEffect, useState } from "react";
 
 export const RaydiumFarms: NextPage = (props) => {
-  const { raydiumFarms, raydiumPoolSetWithLpMintKey } = useFarms();
+  const { raydiumFarms, raydiumPoolSetWithLpMintKey } = useNavigator();
   const [farmsWithPool, setFarmsWithPool] = useState<raydium.FarmInfoWrapper[]>(
     []
   );
