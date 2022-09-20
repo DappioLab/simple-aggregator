@@ -1,14 +1,11 @@
-import { FC } from 'react';
+import { FC } from "react";
 import Link from "next/link";
-export const ContentContainer: FC = props => {
-
+export const ContentContainer: FC = (props) => {
   return (
     <div className="flex-1 drawer h-52">
-     {/* <div className="h-screen drawer drawer-mobile w-full"> */}
+      {/* <div className="h-screen drawer drawer-mobile w-full"> */}
       <input id="my-drawer" type="checkbox" className="grow drawer-toggle" />
-      <div className="items-center  drawer-content">
-        {props.children}
-      </div>
+      <div className="items-center  drawer-content">{props.children}</div>
 
       {/* SideBar / Drawer */}
       <div className="drawer-side">
@@ -25,6 +22,21 @@ export const ContentContainer: FC = props => {
           <li>
             <Link href="/basics">
               <a>Basics</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/raydiumFarms">
+              <a>Raydium Farms</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/orcaFarms">
+              <a>Orca Farms</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/tulipVaults">
+              <a>Tulip Vaults</a>
             </Link>
           </li>
         </ul>

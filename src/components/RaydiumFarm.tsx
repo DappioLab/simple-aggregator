@@ -26,8 +26,8 @@ import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
 interface FarmProps {
-  farm: IFarmInfoWrapper;
-  pool: IPoolInfoWrapper;
+  farm: raydium.FarmInfoWrapper;
+  pool: raydium.PoolInfoWrapper;
 }
 
 export const Farm: FC<FarmProps> = (props: FarmProps) => {
@@ -37,11 +37,11 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const { getUserSOLBalance } = useUserSOLBalanceStore();
 
   // Get Farm
-  const farm = props.farm as raydium.FarmInfoWrapper;
+  const farm = props.farm;
   const farmInfo = farm.farmInfo;
   const farmId = farmInfo.farmId.toString();
   const lpMint = farmInfo.poolLpTokenAccount.mint.toString();
-  const pool = props.pool as raydium.PoolInfoWrapper;
+  const pool = props.pool;
   const poolInfo = pool.poolInfo;
 
   useEffect(() => {

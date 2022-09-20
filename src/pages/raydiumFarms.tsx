@@ -1,22 +1,24 @@
-import { useFarms } from "contexts/FarmsProvider";
-import { Farm } from "../components/Farm";
+import { useFarms } from "contexts/NavigatorProvider";
+import { Farm } from "../components/RaydiumFarm";
 import { NextPage } from "next";
 import Head from "next/head";
 import { IFarmInfoWrapper, raydium } from "../../navigator/src";
 import { useEffect, useState } from "react";
 
-export const Farms: NextPage = (props) => {
-  const { farms, poolSetWithLpMintKey } = useFarms();
-  const [farmsWithPool, setFarmsWithPool] = useState<IFarmInfoWrapper[]>([]);
+export const RaydiumFarms: NextPage = (props) => {
+  const { raydiumFarms, raydiumPoolSetWithLpMintKey } = useFarms();
+  const [farmsWithPool, setFarmsWithPool] = useState<raydium.FarmInfoWrapper[]>(
+    []
+  );
 
   useEffect(() => {
-    const farmsWithPool = farms.filter((farm) => {
-      return poolSetWithLpMintKey.has(
-        (farm.farmInfo as raydium.FarmInfo).poolLpTokenAccount.mint.toString()
+    const farmsWithPool = raydiumFarms.filter((farm) => {
+      return raydiumPoolSetWithLpMintKey.has(
+        farm.farmInfo.poolLpTokenAccount.mint.toString()
       );
     });
     setFarmsWithPool(farmsWithPool);
-  }, [poolSetWithLpMintKey]);
+  }, [raydiumPoolSetWithLpMintKey]);
 
   return (
     <div>
@@ -27,7 +29,7 @@ export const Farms: NextPage = (props) => {
       <div className="md:hero mx-auto p-4">
         <div className="md:hero-content flex flex-col">
           <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#9945FF] to-[#14F195]">
-            Farms
+            Raydium Farms
           </h1>
           {/* CONTENT GOES HERE */}
           <div className="overflow-x-auto">
@@ -45,10 +47,8 @@ export const Farms: NextPage = (props) => {
                   <Farm
                     key={farm.farmInfo.farmId.toString()}
                     farm={farm}
-                    pool={poolSetWithLpMintKey.get(
-                      (
-                        farm.farmInfo as raydium.FarmInfo
-                      ).poolLpTokenAccount.mint.toString()
+                    pool={raydiumPoolSetWithLpMintKey.get(
+                      farm.farmInfo.poolLpTokenAccount.mint.toString()
                     )}
                   ></Farm>
                 ))}
@@ -62,4 +62,4 @@ export const Farms: NextPage = (props) => {
   );
 };
 
-export default Farms;
+export default RaydiumFarms;

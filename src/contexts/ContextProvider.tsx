@@ -21,7 +21,7 @@ import {
   NetworkConfigurationProvider,
   useNetworkConfiguration,
 } from "./NetworkConfigurationProvider";
-import { FarmsProvider } from "./FarmsProvider";
+import { NavigatorProvider } from "./NavigatorProvider";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
@@ -77,7 +77,7 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
       <NetworkConfigurationProvider>
         <AutoConnectProvider>
           <WalletContextProvider>
-            <FarmsProvider>{children}</FarmsProvider>
+            <NavigatorProvider>{children}</NavigatorProvider>
           </WalletContextProvider>
         </AutoConnectProvider>
       </NetworkConfigurationProvider>
