@@ -187,7 +187,8 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
       connection,
       depositorId
     )) as tulip.DepositorInfo;
-    const shareAmount = Number(depositor.shares);
+
+    const shareAmount = Math.floor(Number(depositor.shares) / 10);
 
     const withdrawParams: WithdrawParams = {
       protocol: SupportedProtocols.Tulip,
@@ -199,20 +200,20 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
       poolId: poolInfo.poolId,
     };
 
-    const { pcAmount } = await pool.getCoinAndPcAmount(shareAmount);
-    // tokenB to tokenA
+    const { tokenAAmount: coinAmount } = pool.getTokenAmounts(shareAmount);
+    // tokenA to tokenB
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
-      fromTokenMint: poolInfo.tokenBMint,
-      toTokenMint: poolInfo.tokenAMint,
-      amount: pcAmount, // swap coin to pc
+      fromTokenMint: poolInfo.tokenAMint,
+      toTokenMint: poolInfo.tokenBMint,
+      amount: coinAmount, // swap coin to pc
       slippage: 3,
     };
 
-    // tokenA to USDC
+    // tokenB to USDC
     const swapParams2: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
-      fromTokenMint: poolInfo.tokenAMint,
+      fromTokenMint: poolInfo.tokenBMint,
       toTokenMint: new PublicKey(
         "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
       ),
@@ -231,7 +232,12 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
     swapParams2.amount = minOutAmount;
 
     // 2nd Swap
-    await gateway.swap(swapParams2);
+    if (
+      poolInfo.tokenBMint.toString() !==
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
+    ) {
+      await gateway.swap(swapParams2);
+    }
 
     await gateway.finalize();
     const txs = gateway.transactions();
