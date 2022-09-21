@@ -104,7 +104,6 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount1 = gateway.params.swapMinOutAmount.toNumber();
-    
 
     // 2nd Swap
     swapParams2.amount = minOutAmount1 / 2;
@@ -153,7 +152,9 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
           description: error?.message,
           txid: sig,
         });
-        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;
@@ -281,7 +282,9 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
           description: error?.message,
           txid: sig,
         });
-        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;
