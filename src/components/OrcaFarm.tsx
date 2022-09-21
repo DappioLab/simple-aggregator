@@ -10,7 +10,7 @@ import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
 import {
   IFarmInfoWrapper,
   IPoolInfoWrapper,
-  orca,
+  orca as protocol,
 } from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
@@ -26,9 +26,11 @@ import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
 interface FarmProps {
-  farm: orca.FarmInfoWrapper;
-  pool: orca.PoolInfoWrapper;
+  farm: protocol.FarmInfoWrapper;
+  pool: protocol.PoolInfoWrapper;
 }
+
+const protocolType = SupportedProtocols.Orca;
 
 export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const [apr, setApr] = useState(0);
@@ -46,10 +48,10 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   useEffect(() => {
     const getApr = async () => {
       // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getAprs(3, 4, 5, false);
-      return aprs;
+      const aprs = await farm.getAprs(5, 1, 2);
+      return aprs.length > 1 ? aprs[1] : aprs[0];
     };
-    getApr().then((apr) => setApr(apr[0]));
+    getApr().then((apr) => setApr(apr));
   }, []);
 
   const zapIn = useCallback(async () => {
@@ -89,11 +91,11 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       slippage: 1,
     };
     const addLiquidityParams: AddLiquidityParams = {
-      protocol: SupportedProtocols.Orca,
+      protocol: protocolType,
       poolId: poolInfo.poolId,
     };
     const stakeParams: StakeParams = {
-      protocol: SupportedProtocols.Orca,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
     };
 
@@ -150,7 +152,12 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
           description: error?.message,
           txid: sig,
         });
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
+        console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
+        break;
       }
     }
     console.log("Txs are executed");
@@ -177,29 +184,29 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     );
 
     // Get share amount
-    const ledgerKey = await orca.infos.getFarmerId(
+    const ledgerKey = await protocol.infos.getFarmerId(
       farmInfo,
       provider.wallet.publicKey
     );
-    const ledger = (await orca.infos.getFarmer(
+    const ledger = (await protocol.infos.getFarmer(
       connection,
       ledgerKey
-    )) as orca.FarmerInfo;
+    )) as protocol.FarmerInfo;
     const shareAmount = ledger.amount;
-    const { tokenAAmount, tokenBAmount } = new orca.PoolInfoWrapper(
-      poolInfo
-    ).getTokenAmounts(shareAmount);
+    const { tokenAAmount, tokenBAmount } = await pool.getTokenAmounts(
+      shareAmount
+    );
     const harvestParams: HarvestParams = {
-      protocol: SupportedProtocols.Orca,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
     };
     const unstakeParams: UnstakeParams = {
-      protocol: SupportedProtocols.Orca,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
       shareAmount,
     };
     const removeLiquidityParams: RemoveLiquidityParams = {
-      protocol: SupportedProtocols.Orca,
+      protocol: protocolType,
       poolId: poolInfo.poolId,
     };
     // tokenB to tokenA
@@ -218,8 +225,8 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       toTokenMint: new PublicKey(
         "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
       ),
-      amount: tokenAAmount * 1.8, // Notice: This amount needs to be updated later
-      slippage: 30,
+      amount: 0, // Notice: This amount needs to be updated later
+      slippage: 10,
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -230,8 +237,9 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
 
     // 1st Swap
     await gateway.swap(swapParams1);
-
-    // // 2nd Swap
+    const minOutAmount = gateway.params.swapMinOutAmount.toNumber();
+    swapParams2.amount = minOutAmount + tokenAAmount;
+    // 2nd Swap
     await gateway.swap(swapParams2);
 
     await gateway.finalize();
@@ -269,7 +277,12 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
           description: error?.message,
           txid: sig,
         });
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
+        console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
+        break;
       }
     }
     console.log("Txs are executed");
@@ -286,7 +299,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       <td>
         {lpMint.slice(0, 5)}...{lpMint.slice(lpMint.length - 5)}
       </td>
-      <td>{apr}</td>
+      <td>{apr.toFixed(2) + "%"}</td>
       <td>
         <button className="btn btn-info" onClick={zapIn}>
           Zap In

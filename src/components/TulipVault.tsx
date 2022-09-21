@@ -32,7 +32,6 @@ interface VaultProps {
 }
 
 export const Vault: FC<VaultProps> = (props: VaultProps) => {
-  const [apr, setApr] = useState(0);
   const { connection } = useConnection();
   const wallet = useWallet();
   const { getUserSOLBalance } = useUserSOLBalanceStore();
@@ -44,12 +43,6 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
   const lpMint = vaultInfo.base.underlyingMint.toString();
   const pool = props.pool;
   const poolInfo = pool.poolInfo;
-
-  useEffect(() => {
-    let apr = vault.getApr(); // This will return 0 for now. Will be implemented soon.
-    apr += Number((Math.random() * 50).toFixed(2));
-    setApr(apr);
-  }, []);
 
   const zapIn = useCallback(async () => {
     if (!wallet.publicKey) {
@@ -298,7 +291,6 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
       <td>
         {lpMint.slice(0, 5)}...{lpMint.slice(lpMint.length - 5)}
       </td>
-      <td>{apr}</td>
       <td>
         <button className="btn btn-info" onClick={zapIn}>
           Zap In

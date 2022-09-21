@@ -1,5 +1,5 @@
 import { useNavigator } from "contexts/NavigatorProvider";
-import { Farm } from "../components/RaydiumFarm";
+import { Farm } from "components/RaydiumFarm";
 import { NextPage } from "next";
 import Head from "next/head";
 import { IFarmInfoWrapper, raydium } from "@dappio-wonderland/navigator";
