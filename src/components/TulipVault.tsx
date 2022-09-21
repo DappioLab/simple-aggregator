@@ -39,7 +39,7 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
 
   // Get Farm
   const vault = props.vault;
-  const vaultInfo = vault.vaultInfo as tulip.VaultInfo;
+  const vaultInfo = vault.vaultInfo;
   const vaultId = vaultInfo.vaultId.toString();
   const lpMint = vaultInfo.base.underlyingMint.toString();
   const pool = props.pool;
@@ -149,7 +149,9 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
           description: error?.message,
           txid: sig,
         });
-        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;
@@ -273,7 +275,9 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
           description: error?.message,
           txid: sig,
         });
-        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
+        console.log(
+          "NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging"
+        );
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;

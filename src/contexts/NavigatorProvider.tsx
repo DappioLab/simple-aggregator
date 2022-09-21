@@ -103,8 +103,6 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  // TODO: Add useEffect for Orca
-
   useEffect(() => {
     const getAllVaultsWrappers = async () => {
       return (await tulip.infos.getAllVaultWrappers(
