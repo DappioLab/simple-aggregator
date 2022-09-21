@@ -1,4 +1,4 @@
-import { useFarms } from "contexts/NavigatorProvider";
+import { useNavigator } from "contexts/NavigatorProvider";
 import { Farm } from "../components/OrcaFarm";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -6,17 +6,16 @@ import { IFarmInfoWrapper, orca } from "../../navigator/src";
 import { useEffect, useState } from "react";
 
 export const OrcaFarms: NextPage = (props) => {
-  // TODO: Add state for Orca
-  const { orcaFarms, orcaPoolSetWithLpMintKey } = useFarms();
+  const { orcaFarms, orcaPoolSetWithLpMintKey } = useNavigator();
   const [farmsWithPool, setFarmsWithPool] = useState<orca.FarmInfoWrapper[]>(
     []
   );
   useEffect(() => {
     setFarmsWithPool(
       orcaFarms.filter((farm) => {
-        return orcaPoolSetWithLpMintKey.has(
-          farm.farmInfo.baseTokenMint.toString()
-        );
+        return orcaPoolSetWithLpMintKey.size > 0
+          ? orcaPoolSetWithLpMintKey.has(farm.farmInfo.baseTokenMint.toString())
+          : false;
       })
     );
   }, [orcaFarms]);

@@ -27,9 +27,7 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { autoConnect } = useAutoConnect();
   const { networkConfiguration } = useNetworkConfiguration();
   const network = networkConfiguration as WalletAdapterNetwork;
-  // const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const endpoint = "https://rpc-mainnet-fork.epochs.studio";
-  // const endpoint = "https://ssc-dao.genesysgo.net";
   const config: ConnectionConfig = {
     wsEndpoint: "wss://rpc-mainnet-fork.epochs.studio/ws",
     commitment: "confirmed",

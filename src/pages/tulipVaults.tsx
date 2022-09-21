@@ -1,12 +1,27 @@
-import { useFarms } from "contexts/NavigatorProvider";
-import { Farm } from "../components/RaydiumFarm";
+import { useNavigator } from "contexts/NavigatorProvider";
+import { Vault } from "components/TulipVault";
 import { NextPage } from "next";
 import Head from "next/head";
-import { IFarmInfoWrapper, raydium } from "../../navigator/src";
+import { tulip } from "../../navigator/src";
 import { useEffect, useState } from "react";
 
 export const TulipVaults: NextPage = (props) => {
-  // TODO: Add state for Tulip
+  const { tulipVaults, raydiumPoolSetWithLpMintKey } = useNavigator();
+  const [vaultsWithPool, setVaultsWithPool] = useState<
+    tulip.VaultInfoWrapper[]
+  >([]);
+
+  useEffect(() => {
+    const vaultsWithPool = tulipVaults.filter((vault) => {
+      return raydiumPoolSetWithLpMintKey.size > 0
+        ? raydiumPoolSetWithLpMintKey.get(
+            vault.vaultInfo.base.underlyingMint.toString()
+          )
+        : false;
+    });
+    setVaultsWithPool(vaultsWithPool);
+  }, [raydiumPoolSetWithLpMintKey]);
+
   return (
     <div>
       <Head>
@@ -29,7 +44,17 @@ export const TulipVaults: NextPage = (props) => {
                   <th></th>
                 </tr>
               </thead>
-              <tbody>{/* TODO: Render vaults here */}</tbody>
+              <tbody>
+                {vaultsWithPool.map((vault) => (
+                  <Vault
+                    key={vault.vaultInfo.vaultId.toString()}
+                    vault={vault}
+                    pool={raydiumPoolSetWithLpMintKey.get(
+                      vault.vaultInfo.base.underlyingMint.toString()
+                    )}
+                  ></Vault>
+                ))}
+              </tbody>
             </table>
           </div>
           <div className="text-center"></div>
