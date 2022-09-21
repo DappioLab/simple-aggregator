@@ -101,13 +101,11 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount1 = gateway.params.swapMinOutAmount.toNumber();
-    console.log(minOutAmount1);
 
     // 2nd Swap
     swapParams2.amount = minOutAmount1 / 2;
     await gateway.swap(swapParams2);
     const minOutAmount2 = gateway.params.swapMinOutAmount.toNumber();
-    console.log(minOutAmount2);
 
     // Add Liquidity
     addLiquidityParams.tokenInAmount = minOutAmount2;
@@ -151,6 +149,7 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
           description: error?.message,
           txid: sig,
         });
+        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;
@@ -274,6 +273,7 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
           description: error?.message,
           txid: sig,
         });
+        // NOTICE: paste the output to Transaction Inspector in Solana Explorer for debugging
         console.log(tx.serializeMessage().toString("base64"));
         console.error("error", `Transaction failed! ${error?.message}`, sig);
         break;
