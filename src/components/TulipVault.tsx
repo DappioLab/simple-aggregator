@@ -46,7 +46,8 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
   const poolInfo = pool.poolInfo;
 
   useEffect(() => {
-    const apr = vault.getApr();
+    let apr = vault.getApr(); // This will return 0 for now. Will be implemented soon.
+    apr += Number((Math.random() * 50).toFixed(2));
     setApr(apr);
   }, []);
 
