@@ -7,11 +7,7 @@ import {
 import { notify } from "utils/notifications";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
-import {
-  IFarmInfoWrapper,
-  IPoolInfoWrapper,
-  raydium,
-} from "../../navigator/src";
+import { IFarmInfoWrapper, IPoolInfoWrapper, orca } from "../../navigator/src";
 import {
   AddLiquidityParams,
   GatewayBuilder,
@@ -26,8 +22,8 @@ import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
 interface FarmProps {
-  farm: raydium.FarmInfoWrapper;
-  pool: raydium.PoolInfoWrapper;
+  farm: orca.FarmInfoWrapper;
+  pool: orca.PoolInfoWrapper;
 }
 
 export const Farm: FC<FarmProps> = (props: FarmProps) => {
@@ -40,17 +36,16 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const farm = props.farm;
   const farmInfo = farm.farmInfo;
   const farmId = farmInfo.farmId.toString();
-  const lpMint = farmInfo.poolLpTokenAccount.mint.toString();
+  const lpMint = farmInfo.baseTokenMint.toString();
   const pool = props.pool;
   const poolInfo = pool.poolInfo;
-
   useEffect(() => {
     const getApr = async () => {
       // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getAprs(5, 1, 2);
-      return aprs.length > 1 ? aprs[1] : aprs[0];
+      const aprs = await farm.getAprs(3, 4, 5, false);
+      return aprs;
     };
-    getApr().then((apr) => setApr(apr));
+    getApr().then((apr) => setApr(apr[0]));
   }, []);
 
   const zapIn = useCallback(async () => {
@@ -90,13 +85,12 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       slippage: 1,
     };
     const addLiquidityParams: AddLiquidityParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: SupportedProtocols.Orca,
       poolId: poolInfo.poolId,
     };
     const stakeParams: StakeParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: SupportedProtocols.Orca,
       farmId: farmInfo.farmId,
-      version: farmInfo.version,
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -136,7 +130,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       let sig: string = "";
       try {
         sig = await connection.sendRawTransaction(tx.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
           commitment: "confirmed",
         } as unknown as anchor.web3.SendOptions);
         await connection.confirmTransaction(sig, connection.commitment);
@@ -180,41 +174,37 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     );
 
     // Get share amount
-    const ledgerKey = await raydium.infos.getFarmerId(
+    const ledgerKey = await orca.infos.getFarmerId(
       farmInfo,
-      provider.wallet.publicKey,
-      farmInfo.version
+      provider.wallet.publicKey
     );
-    const ledger = (await raydium.infos.getFarmer(
+    const ledger = (await orca.infos.getFarmer(
       connection,
-      ledgerKey,
-      farmInfo.version
-    )) as raydium.FarmerInfo;
+      ledgerKey
+    )) as orca.FarmerInfo;
     const shareAmount = ledger.amount;
-    const { tokenAAmount } = await pool.getTokenAmounts(shareAmount);
-
+    const { tokenAAmount, tokenBAmount } = new orca.PoolInfoWrapper(
+      poolInfo
+    ).getTokenAmounts(shareAmount);
     const harvestParams: HarvestParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: SupportedProtocols.Orca,
       farmId: farmInfo.farmId,
-      version: farmInfo.version,
     };
     const unstakeParams: UnstakeParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: SupportedProtocols.Orca,
       farmId: farmInfo.farmId,
       shareAmount,
-      version: farmInfo.version,
     };
     const removeLiquidityParams: RemoveLiquidityParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: SupportedProtocols.Orca,
       poolId: poolInfo.poolId,
     };
-
     // tokenB to tokenA
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenBMint,
       toTokenMint: poolInfo.tokenAMint,
-      amount: tokenAAmount, // swap coin to pc
+      amount: tokenBAmount, // swap coin to pc
       slippage: 3,
     };
 
@@ -225,8 +215,8 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       toTokenMint: new PublicKey(
         "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
       ),
-      amount: 0, // Notice: This amount needs to be updated later
-      slippage: 3,
+      amount: tokenAAmount * 1.8, // Notice: This amount needs to be updated later
+      slippage: 30,
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -237,10 +227,8 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
 
     // 1st Swap
     await gateway.swap(swapParams1);
-    const minOutAmount = gateway.params.swapMinOutAmount.toNumber();
-    swapParams2.amount = minOutAmount;
 
-    // 2nd Swap
+    // // 2nd Swap
     await gateway.swap(swapParams2);
 
     await gateway.finalize();
@@ -261,7 +249,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       let sig: string = "";
       try {
         sig = await connection.sendRawTransaction(tx.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
           commitment: "confirmed",
         } as unknown as anchor.web3.SendOptions);
         await connection.confirmTransaction(sig, connection.commitment);
