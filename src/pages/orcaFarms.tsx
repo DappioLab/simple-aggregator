@@ -2,7 +2,7 @@ import { useNavigator } from "contexts/NavigatorProvider";
 import { Farm } from "../components/OrcaFarm";
 import { NextPage } from "next";
 import Head from "next/head";
-import { IFarmInfoWrapper, orca } from "../../navigator/src";
+import { IFarmInfoWrapper, orca } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
 
 export const OrcaFarms: NextPage = (props) => {

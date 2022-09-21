@@ -11,7 +11,7 @@ import {
   IFarmInfoWrapper,
   IPoolInfoWrapper,
   raydium,
-} from "../../navigator/src";
+} from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
   GatewayBuilder,

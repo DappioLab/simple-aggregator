@@ -7,12 +7,11 @@ import {
   useEffect,
   useState,
 } from "react";
-import { raydium, orca, tulip } from "../../navigator/src";
+import { raydium, orca, tulip } from "@dappio-wonderland/navigator";
 
 export interface NavigatorContextState {
   raydiumFarms: raydium.FarmInfoWrapper[];
   raydiumPoolSetWithLpMintKey: Map<string, raydium.PoolInfoWrapper>;
-
   orcaFarms: orca.FarmInfoWrapper[];
   orcaPoolSetWithLpMintKey: Map<string, orca.PoolInfoWrapper>;
 

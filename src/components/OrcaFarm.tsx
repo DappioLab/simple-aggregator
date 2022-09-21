@@ -7,7 +7,11 @@ import {
 import { notify } from "utils/notifications";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
-import { IFarmInfoWrapper, IPoolInfoWrapper, orca } from "../../navigator/src";
+import {
+  IFarmInfoWrapper,
+  IPoolInfoWrapper,
+  orca,
+} from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
   GatewayBuilder,
@@ -98,7 +102,6 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount1 = gateway.params.swapMinOutAmount.toNumber();
-    
 
     // 2nd Swap
     swapParams2.amount = minOutAmount1 / 2;

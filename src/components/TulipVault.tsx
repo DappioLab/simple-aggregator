@@ -12,7 +12,7 @@ import {
   IPoolInfoWrapper,
   raydium,
   tulip,
-} from "../../navigator/src";
+} from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
   GatewayBuilder,

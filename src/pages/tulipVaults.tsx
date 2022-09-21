@@ -2,7 +2,7 @@ import { useNavigator } from "contexts/NavigatorProvider";
 import { Vault } from "components/TulipVault";
 import { NextPage } from "next";
 import Head from "next/head";
-import { tulip } from "../../navigator/src";
+import { tulip } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
 
 export const TulipVaults: NextPage = (props) => {

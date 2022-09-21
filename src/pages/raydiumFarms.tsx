@@ -2,7 +2,7 @@ import { useNavigator } from "contexts/NavigatorProvider";
 import { Farm } from "../components/RaydiumFarm";
 import { NextPage } from "next";
 import Head from "next/head";
-import { IFarmInfoWrapper, raydium } from "../../navigator/src";
+import { IFarmInfoWrapper, raydium } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
 
 export const RaydiumFarms: NextPage = (props) => {
