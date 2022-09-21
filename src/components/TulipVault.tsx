@@ -22,7 +22,7 @@ import {
   SupportedProtocols,
   SwapParams,
   WithdrawParams,
-} from "../../gateway/ts";
+} from "@dappio-wonderland/gateway";
 import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
