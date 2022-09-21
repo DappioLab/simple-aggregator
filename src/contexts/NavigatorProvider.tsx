@@ -97,18 +97,17 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
         setOrcaPoolSetWithLpMintKey(poolSetResult);
       });
     }
-  }, []);
-
-  useEffect(() => {
-    const getAllVaultsWrappers = async () => {
-      return (await tulip.infos.getAllVaultWrappers(
-        connection
-      )) as tulip.VaultInfoWrapper[];
-    };
-
-    getAllVaultsWrappers().then((wrappers) => {
-      setTulipVaults(wrappers);
-    });
+    {
+      const getAllVaultsWrappers = async () => {
+        return (await tulip.infos.getAllVaultWrappers(
+          connection
+        )) as tulip.VaultInfoWrapper[];
+      };
+  
+      getAllVaultsWrappers().then((wrappers) => {
+        setTulipVaults(wrappers);
+      });
+    }
   }, []);
 
   return (

@@ -14,7 +14,7 @@ export const TulipVaults: NextPage = (props) => {
   useEffect(() => {
     const vaultsWithPool = tulipVaults.filter((vault) => {
       return raydiumPoolSetWithLpMintKey.size > 0
-        ? raydiumPoolSetWithLpMintKey.get(
+        ? raydiumPoolSetWithLpMintKey.has(
             vault.vaultInfo.base.underlyingMint.toString()
           )
         : false;
@@ -38,22 +38,27 @@ export const TulipVaults: NextPage = (props) => {
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th>Farm ID</th>
+                  <th>Vault ID</th>
                   <th>LP Token</th>
-                  <th>APY</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                {vaultsWithPool.map((vault) => (
-                  <Vault
-                    key={vault.vaultInfo.vaultId.toString()}
-                    vault={vault}
-                    pool={raydiumPoolSetWithLpMintKey.get(
-                      vault.vaultInfo.base.underlyingMint.toString()
-                    )}
-                  ></Vault>
-                ))}
+                {vaultsWithPool
+                  .sort((a, b) =>
+                    a.vaultInfo.vaultId
+                      .toString()
+                      .localeCompare(b.vaultInfo.vaultId.toString())
+                  )
+                  .map((vault) => (
+                    <Vault
+                      key={vault.vaultInfo.vaultId.toString()}
+                      vault={vault}
+                      pool={raydiumPoolSetWithLpMintKey.get(
+                        vault.vaultInfo.base.underlyingMint.toString()
+                      )}
+                    ></Vault>
+                  ))}
               </tbody>
             </table>
           </div>

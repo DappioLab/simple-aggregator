@@ -10,7 +10,7 @@ import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
 import {
   IFarmInfoWrapper,
   IPoolInfoWrapper,
-  raydium,
+  raydium as protocol,
 } from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
@@ -26,9 +26,11 @@ import { AnchorWallet } from "utils/anchorWallet";
 import * as anchor from "@project-serum/anchor";
 
 interface FarmProps {
-  farm: raydium.FarmInfoWrapper;
-  pool: raydium.PoolInfoWrapper;
+  farm: protocol.FarmInfoWrapper;
+  pool: protocol.PoolInfoWrapper;
 }
+
+const protocolType = SupportedProtocols.Raydium;
 
 export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const [apr, setApr] = useState(0);
@@ -43,7 +45,6 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const lpMint = farmInfo.poolLpTokenAccount.mint.toString();
   const pool = props.pool;
   const poolInfo = pool.poolInfo;
-
   useEffect(() => {
     const getApr = async () => {
       // NOTICE: We mocked LP price and reward price here just for demo
@@ -90,11 +91,11 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       slippage: 1,
     };
     const addLiquidityParams: AddLiquidityParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: protocolType,
       poolId: poolInfo.poolId,
     };
     const stakeParams: StakeParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
       version: farmInfo.version,
     };
@@ -135,7 +136,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       let sig: string = "";
       try {
         sig = await connection.sendRawTransaction(tx.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
           commitment: "confirmed",
         } as unknown as anchor.web3.SendOptions);
         await connection.confirmTransaction(sig, connection.commitment);
@@ -184,41 +185,42 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     );
 
     // Get share amount
-    const ledgerKey = await raydium.infos.getFarmerId(
+    const ledgerKey = await protocol.infos.getFarmerId(
       farmInfo,
       provider.wallet.publicKey,
       farmInfo.version
     );
-    const ledger = (await raydium.infos.getFarmer(
+    const ledger = (await protocol.infos.getFarmer(
       connection,
       ledgerKey,
       farmInfo.version
-    )) as raydium.FarmerInfo;
+    )) as protocol.FarmerInfo;
     const shareAmount = ledger.amount;
-    const { tokenAAmount } = await pool.getTokenAmounts(shareAmount);
+    const { tokenAAmount, tokenBAmount } = await pool.getTokenAmounts(
+      shareAmount
+    );
 
     const harvestParams: HarvestParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
       version: farmInfo.version,
     };
     const unstakeParams: UnstakeParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: protocolType,
       farmId: farmInfo.farmId,
       shareAmount,
       version: farmInfo.version,
     };
     const removeLiquidityParams: RemoveLiquidityParams = {
-      protocol: SupportedProtocols.Raydium,
+      protocol: protocolType,
       poolId: poolInfo.poolId,
     };
-
     // tokenB to tokenA
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenBMint,
       toTokenMint: poolInfo.tokenAMint,
-      amount: tokenAAmount, // swap coin to pc
+      amount: tokenBAmount, // swap coin to pc
       slippage: 3,
     };
 
@@ -230,7 +232,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
         "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
       ),
       amount: 0, // Notice: This amount needs to be updated later
-      slippage: 3,
+      slippage: 10,
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -242,8 +244,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount = gateway.params.swapMinOutAmount.toNumber();
-    swapParams2.amount = minOutAmount;
-
+    swapParams2.amount = minOutAmount + tokenAAmount;
     // 2nd Swap
     await gateway.swap(swapParams2);
 
@@ -265,7 +266,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       let sig: string = "";
       try {
         sig = await connection.sendRawTransaction(tx.serialize(), {
-          skipPreflight: false,
+          skipPreflight: true,
           commitment: "confirmed",
         } as unknown as anchor.web3.SendOptions);
         await connection.confirmTransaction(sig, connection.commitment);
@@ -304,7 +305,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       <td>
         {lpMint.slice(0, 5)}...{lpMint.slice(lpMint.length - 5)}
       </td>
-      <td>{apr}</td>
+      <td>{apr.toFixed(2) + "%"}</td>
       <td>
         <button className="btn btn-info" onClick={zapIn}>
           Zap In
