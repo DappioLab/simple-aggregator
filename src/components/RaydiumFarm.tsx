@@ -47,7 +47,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   useEffect(() => {
     const getApr = async () => {
       // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getApr(connection, 5, 1, 2);
+      const aprs = await farm.getAprs(5, 1, 2);
       return aprs.length > 1 ? aprs[1] : aprs[0];
     };
     getApr().then((apr) => setApr(apr));
@@ -192,7 +192,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       farmInfo.version
     )) as raydium.FarmerInfo;
     const shareAmount = ledger.amount;
-    const { pcAmount } = await pool.getCoinAndPcAmount(shareAmount);
+    const { tokenAAmount } = await pool.getTokenAmounts(shareAmount);
 
     const harvestParams: HarvestParams = {
       protocol: SupportedProtocols.Raydium,
@@ -215,7 +215,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenBMint,
       toTokenMint: poolInfo.tokenAMint,
-      amount: pcAmount, // swap coin to pc
+      amount: tokenAAmount, // swap coin to pc
       slippage: 3,
     };
 

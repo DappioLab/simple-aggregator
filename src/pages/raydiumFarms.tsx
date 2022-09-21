@@ -43,15 +43,21 @@ export const RaydiumFarms: NextPage = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {farmsWithPool.map((farm) => (
-                  <Farm
-                    key={farm.farmInfo.farmId.toString()}
-                    farm={farm}
-                    pool={raydiumPoolSetWithLpMintKey.get(
-                      farm.farmInfo.poolLpTokenAccount.mint.toString()
-                    )}
-                  ></Farm>
-                ))}
+                {farmsWithPool
+                  .sort((a, b) => {
+                    return a.farmInfo.farmId
+                      .toString()
+                      .localeCompare(b.farmInfo.farmId.toString());
+                  })
+                  .map((farm) => (
+                    <Farm
+                      key={farm.farmInfo.farmId.toString()}
+                      farm={farm}
+                      pool={raydiumPoolSetWithLpMintKey.get(
+                        farm.farmInfo.poolLpTokenAccount.mint.toString()
+                      )}
+                    ></Farm>
+                  ))}
               </tbody>
             </table>
           </div>
