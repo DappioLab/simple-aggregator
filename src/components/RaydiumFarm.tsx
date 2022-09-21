@@ -104,13 +104,12 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     // 1st Swap
     await gateway.swap(swapParams1);
     const minOutAmount1 = gateway.params.swapMinOutAmount.toNumber();
-    console.log(minOutAmount1);
+    
 
     // 2nd Swap
     swapParams2.amount = minOutAmount1 / 2;
     await gateway.swap(swapParams2);
     const minOutAmount2 = gateway.params.swapMinOutAmount.toNumber();
-    console.log(minOutAmount2);
 
     // Add Liquidity
     addLiquidityParams.tokenInAmount = minOutAmount2;

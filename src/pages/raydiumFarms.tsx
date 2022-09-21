@@ -44,11 +44,11 @@ export const RaydiumFarms: NextPage = (props) => {
               </thead>
               <tbody>
                 {farmsWithPool
-                  .sort((a, b) => {
-                    return a.farmInfo.farmId
+                  .sort((a, b) =>
+                    a.farmInfo.farmId
                       .toString()
-                      .localeCompare(b.farmInfo.farmId.toString());
-                  })
+                      .localeCompare(b.farmInfo.farmId.toString())
+                  )
                   .map((farm) => (
                     <Farm
                       key={farm.farmInfo.farmId.toString()}
