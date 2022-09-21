@@ -13,9 +13,11 @@ export const RaydiumFarms: NextPage = (props) => {
 
   useEffect(() => {
     const farmsWithPool = raydiumFarms.filter((farm) => {
-      return raydiumPoolSetWithLpMintKey.has(
-        farm.farmInfo.poolLpTokenAccount.mint.toString()
-      );
+      return raydiumPoolSetWithLpMintKey.size > 0
+        ? raydiumPoolSetWithLpMintKey.has(
+            farm.farmInfo.poolLpTokenAccount.mint.toString()
+          )
+        : false;
     });
     setFarmsWithPool(farmsWithPool);
   }, [raydiumPoolSetWithLpMintKey]);

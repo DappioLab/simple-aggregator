@@ -13,9 +13,11 @@ export const TulipVaults: NextPage = (props) => {
 
   useEffect(() => {
     const vaultsWithPool = tulipVaults.filter((vault) => {
-      return raydiumPoolSetWithLpMintKey.get(
-        vault.vaultInfo.base.underlyingMint.toString()
-      );
+      return raydiumPoolSetWithLpMintKey.size > 0
+        ? raydiumPoolSetWithLpMintKey.get(
+            vault.vaultInfo.base.underlyingMint.toString()
+          )
+        : false;
     });
     setVaultsWithPool(vaultsWithPool);
   }, [raydiumPoolSetWithLpMintKey]);

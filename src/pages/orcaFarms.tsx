@@ -13,9 +13,9 @@ export const OrcaFarms: NextPage = (props) => {
   useEffect(() => {
     setFarmsWithPool(
       orcaFarms.filter((farm) => {
-        return orcaPoolSetWithLpMintKey.has(
-          farm.farmInfo.baseTokenMint.toString()
-        );
+        return orcaPoolSetWithLpMintKey.size > 0
+          ? orcaPoolSetWithLpMintKey.has(farm.farmInfo.baseTokenMint.toString())
+          : false;
       })
     );
   }, [orcaFarms]);
