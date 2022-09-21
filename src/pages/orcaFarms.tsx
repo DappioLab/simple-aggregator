@@ -44,15 +44,21 @@ export const OrcaFarms: NextPage = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {farmsWithPool.map((farm) => (
-                  <Farm
-                    key={farm.farmInfo.farmId.toString()}
-                    farm={farm}
-                    pool={orcaPoolSetWithLpMintKey.get(
-                      farm.farmInfo.baseTokenMint.toString()
-                    )}
-                  ></Farm>
-                ))}
+                {farmsWithPool
+                  .sort((a, b) => {
+                    return a.farmInfo.farmId
+                      .toString()
+                      .localeCompare(b.farmInfo.farmId.toString());
+                  })
+                  .map((farm) => (
+                    <Farm
+                      key={farm.farmInfo.farmId.toString()}
+                      farm={farm}
+                      pool={orcaPoolSetWithLpMintKey.get(
+                        farm.farmInfo.baseTokenMint.toString()
+                      )}
+                    ></Farm>
+                  ))}
               </tbody>
             </table>
           </div>

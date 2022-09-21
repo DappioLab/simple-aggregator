@@ -42,10 +42,10 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   useEffect(() => {
     const getApr = async () => {
       // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getApr(false);
+      const aprs = await farm.getAprs(3, 4, 5, false);
       return aprs;
     };
-    getApr().then((apr) => setApr(apr));
+    getApr().then((apr) => setApr(apr[0]));
   }, []);
 
   const zapIn = useCallback(async () => {
@@ -184,7 +184,9 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       ledgerKey
     )) as orca.FarmerInfo;
     const shareAmount = ledger.amount;
-
+    const { tokenAAmount, tokenBAmount } = new orca.PoolInfoWrapper(
+      poolInfo
+    ).getTokenAmounts(shareAmount);
     const harvestParams: HarvestParams = {
       protocol: SupportedProtocols.Orca,
       farmId: farmInfo.farmId,
@@ -197,10 +199,16 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     const removeLiquidityParams: RemoveLiquidityParams = {
       protocol: SupportedProtocols.Orca,
       poolId: poolInfo.poolId,
-      singleToTokenMint: poolInfo.tokenAMint,
     };
-
-   let aOut = new orca.PoolInfoWrapper(poolInfo,).getAOutAmount(
+    // tokenB to tokenA
+    const swapParams1: SwapParams = {
+      protocol: SupportedProtocols.Jupiter,
+      fromTokenMint: poolInfo.tokenBMint,
+      toTokenMint: poolInfo.tokenAMint,
+      amount: tokenBAmount, // swap coin to pc
+      slippage: 3,
+    };
+    console.log(shareAmount, tokenAAmount, tokenBAmount);
 
     // tokenA to USDC
     const swapParams2: SwapParams = {
@@ -209,8 +217,8 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       toTokenMint: new PublicKey(
         "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
       ),
-      amount: , // Notice: This amount needs to be updated later
-      slippage: 3,
+      amount: tokenAAmount * 1.8, // Notice: This amount needs to be updated later
+      slippage: 30,
     };
 
     const gateway = new GatewayBuilder(provider);
@@ -221,12 +229,9 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
 
     // 1st Swap
     await gateway.swap(swapParams1);
-    const minOutAmount = gateway.params.swapMinOutAmount.toNumber();
-    swapParams2.amount = minOutAmount;
-    console.log(minOutAmount);
 
-    // 2nd Swap
-    await gateway.swap(swapParams2);
+    // // 2nd Swap
+    //await gateway.swap(swapParams2);
 
     await gateway.finalize();
     const txs = gateway.transactions();
