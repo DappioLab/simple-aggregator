@@ -231,7 +231,7 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
     await gateway.swap(swapParams1);
 
     // // 2nd Swap
-    //await gateway.swap(swapParams2);
+    await gateway.swap(swapParams2);
 
     await gateway.finalize();
     const txs = gateway.transactions();
