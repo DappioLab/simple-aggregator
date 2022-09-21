@@ -13,7 +13,6 @@ export interface NavigatorContextState {
   raydiumFarms: raydium.FarmInfoWrapper[];
   raydiumPoolSetWithLpMintKey: Map<string, raydium.PoolInfoWrapper>;
 
-  // TODO: Add Orca farms
   orcaFarms: orca.FarmInfoWrapper[];
   orcaPoolSetWithLpMintKey: Map<string, orca.PoolInfoWrapper>;
 
@@ -43,8 +42,6 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
   const [orcaPoolSetWithLpMintKey, setOrcaPoolSetWithLpMintKey] = useState<
     Map<string, orca.PoolInfoWrapper>
   >({} as Map<string, orca.PoolInfoWrapper>);
-
-  // TODO: Add useState for Orca
 
   const [tulipVaults, setTulipVaults] = useState<tulip.VaultInfoWrapper[]>([]);
 
@@ -117,8 +114,6 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
 
   return (
     <NavigatorContext.Provider
-      // TODO: Add value for Orca
-      // TODO: Add value for Tulip
       value={{
         raydiumFarms,
         raydiumPoolSetWithLpMintKey,

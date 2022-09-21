@@ -6,7 +6,6 @@ import { IFarmInfoWrapper, orca } from "../../navigator/src";
 import { useEffect, useState } from "react";
 
 export const OrcaFarms: NextPage = (props) => {
-  // TODO: Add state for Orca
   const { orcaFarms, orcaPoolSetWithLpMintKey } = useNavigator();
   const [farmsWithPool, setFarmsWithPool] = useState<orca.FarmInfoWrapper[]>(
     []
