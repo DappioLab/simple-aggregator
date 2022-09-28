@@ -1,15 +1,15 @@
 import { useNavigator } from "contexts/NavigatorProvider";
-import { Farm } from "components/RaydiumFarm";
 import { NextPage } from "next";
 import Head from "next/head";
-import { IFarmInfoWrapper, raydium } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
+import { raydium as protocol } from "@dappio-wonderland/navigator";
+import { Farm } from "components/RaydiumFarm";
 
 export const RaydiumFarms: NextPage = (props) => {
   const { raydiumFarms, raydiumPoolSetWithLpMintKey } = useNavigator();
-  const [farmsWithPool, setFarmsWithPool] = useState<raydium.FarmInfoWrapper[]>(
-    []
-  );
+  const [farmsWithPool, setFarmsWithPool] = useState<
+    protocol.FarmInfoWrapper[]
+  >([]);
 
   useEffect(() => {
     const farmsWithPool = raydiumFarms.filter((farm) => {

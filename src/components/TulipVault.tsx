@@ -1,30 +1,21 @@
-import { FC, useCallback, useEffect, useState } from "react";
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  TransactionSignature,
-} from "@solana/web3.js";
+import { FC, useCallback } from "react";
+import { PublicKey } from "@solana/web3.js";
 import { notify } from "utils/notifications";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
-import {
-  IFarmInfoWrapper,
-  IPoolInfoWrapper,
-  raydium,
-  tulip,
-} from "@dappio-wonderland/navigator";
+import { AnchorWallet } from "utils/anchorWallet";
+import * as anchor from "@project-serum/anchor";
+import { raydium, tulip } from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
   GatewayBuilder,
-  HarvestParams,
   RemoveLiquidityParams,
   DepositParams,
   SupportedProtocols,
   SwapParams,
   WithdrawParams,
+  WSOL,
 } from "@dappio-wonderland/gateway";
-import { AnchorWallet } from "utils/anchorWallet";
-import * as anchor from "@project-serum/anchor";
 
 interface VaultProps {
   vault: tulip.VaultInfoWrapper;
@@ -60,14 +51,12 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
       new AnchorWallet(wallet),
       anchor.AnchorProvider.defaultOptions()
     );
-    const zapInAmount = 10000; // USDC Amount
+    const zapInAmount = 10000; // WSOL Amount
 
-    // USDC to tokenA
+    // WSOL to tokenA
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
-      fromTokenMint: new PublicKey(
-        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-      ),
+      fromTokenMint: new PublicKey(WSOL),
       toTokenMint: poolInfo.tokenAMint,
       amount: zapInAmount,
       slippage: 1,
@@ -205,13 +194,11 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
       slippage: 3,
     };
 
-    // tokenB to USDC
+    // tokenB to WSOL
     const swapParams2: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenBMint,
-      toTokenMint: new PublicKey(
-        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-      ),
+      toTokenMint: new PublicKey(WSOL),
       amount: 0, // Notice: This amount needs to be updated later
       slippage: 3,
     };
@@ -227,10 +214,7 @@ export const Vault: FC<VaultProps> = (props: VaultProps) => {
     swapParams2.amount = minOutAmount;
 
     // 2nd Swap
-    if (
-      poolInfo.tokenBMint.toString() !==
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-    ) {
+    if (!poolInfo.tokenBMint.equals(WSOL)) {
       await gateway.swap(swapParams2);
     }
 

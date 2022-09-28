@@ -1,6 +1,4 @@
 import { FC } from "react";
-import Link from "next/link";
-
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useAutoConnect } from "../contexts/AutoConnectProvider";
 import NetworkSwitcher from "./NetworkSwitcher";

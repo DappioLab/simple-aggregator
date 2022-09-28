@@ -14,7 +14,6 @@ export interface NavigatorContextState {
   raydiumPoolSetWithLpMintKey: Map<string, raydium.PoolInfoWrapper>;
   orcaFarms: orca.FarmInfoWrapper[];
   orcaPoolSetWithLpMintKey: Map<string, orca.PoolInfoWrapper>;
-
   tulipVaults: tulip.VaultInfoWrapper[];
 }
 
@@ -103,7 +102,7 @@ export const NavigatorProvider: FC<{ children: ReactNode }> = ({
           connection
         )) as tulip.VaultInfoWrapper[];
       };
-  
+
       getAllVaultsWrappers().then((wrappers) => {
         setTulipVaults(wrappers);
       });

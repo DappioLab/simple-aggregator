@@ -1,15 +1,15 @@
 import { useNavigator } from "contexts/NavigatorProvider";
-import { Farm } from "../components/OrcaFarm";
 import { NextPage } from "next";
 import Head from "next/head";
-import { IFarmInfoWrapper, orca } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
+import { orca as protocol } from "@dappio-wonderland/navigator";
+import { Farm } from "../components/OrcaFarm";
 
 export const OrcaFarms: NextPage = (props) => {
   const { orcaFarms, orcaPoolSetWithLpMintKey } = useNavigator();
-  const [farmsWithPool, setFarmsWithPool] = useState<orca.FarmInfoWrapper[]>(
-    []
-  );
+  const [farmsWithPool, setFarmsWithPool] = useState<
+    protocol.FarmInfoWrapper[]
+  >([]);
   useEffect(() => {
     setFarmsWithPool(
       orcaFarms.filter((farm) => {

@@ -88,12 +88,12 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@dappio-wonderland/gateway@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@dappio-wonderland/gateway/-/gateway-0.2.3.tgz#59b4897eeaa9874f3a2535550ce13e9fac81d00b"
-  integrity sha512-7+yDS+gUU5Wk/T99kXYuWthZzjIpDUPGTVSwodiQrLFkqDd6b6H3FcD68/y8dZkta/rU3jl4xUwsD3LeiDcNmg==
+"@dappio-wonderland/gateway@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@dappio-wonderland/gateway/-/gateway-0.2.5.tgz#fe8c6c6a1053b263c1aef998760f70ad9788c629"
+  integrity sha512-pXin51XZy9ehwNADFicWoAvPvWJoS66DR551NBRAHq12XNYFnSH5itIJY87YHN6hhIgFZBg5BAf2pBtAMj7eSA==
   dependencies:
-    "@dappio-wonderland/navigator" "^0.2.3"
+    "@dappio-wonderland/navigator" "^0.2.5"
     "@jup-ag/core" "^1.0.0-beta.26"
     "@project-serum/anchor" "^0.24.2"
     "@project-serum/borsh" "^0.2.5"
@@ -102,10 +102,10 @@
     "@solana/spl-token-v2" "npm:@solana/spl-token@0.2.0"
     js-sha256 "^0.9.0"
 
-"@dappio-wonderland/navigator@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@dappio-wonderland/navigator/-/navigator-0.2.3.tgz#11a643aac66f2de786a89a6098ea3dad83ea5ae2"
-  integrity sha512-qxzb8iVEWUV8RuPVjoWxlKBOSjmKoDxjAwXvtkIw94GNguS/SDTojg8Cdu41NpsQnPbQwgOnD5Cik+aeYrG2aw==
+"@dappio-wonderland/navigator@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@dappio-wonderland/navigator/-/navigator-0.2.5.tgz#c498dfbce4941399e4adce438789a0ed005259f6"
+  integrity sha512-paoT0Z4xGjAFffxcPZHCZYBVI3f+OuiN4HX0w80oJJNlY95fDpL+pp7WPAsmRRCgXDwfzykIN7rSFVbTFmPavA==
   dependencies:
     "@project-serum/borsh" "^0.2.2"
     "@project-serum/serum" "^0.13.61"
@@ -118,7 +118,6 @@
     buffer-layout "^1.2.2"
     graphql "^16.6.0"
     graphql-request "^4.3.0"
-    js-sha256 "^0.9.0"
     mocha "^10.0.0"
 
 "@eslint/eslintrc@^1.0.5":
@@ -213,19 +212,19 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@jup-ag/core@^1.0.0-beta.26":
-  version "1.0.0-test.35"
-  resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-1.0.0-test.35.tgz#b61f2611388f2c736ad467aa6f33a4ccee7f7457"
-  integrity sha512-FmcOsdJFlwP1g1rdp8hsfpP8wABFvhx35TSUF6/V+ijJh6m3e6P0IoWjTh9EOp1wtpFFS+u6zgi+aB+QwnPzUw==
+"@jup-ag/core@1.0.0-beta.26", "@jup-ag/core@^1.0.0-beta.26":
+  version "1.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-1.0.0-beta.26.tgz#fd2e637d982f809ad0373753e4f7e7d46c3a1ab0"
+  integrity sha512-TaUbh6eriuc59wnbM58HS2ahQHn3P3TAwBjwlqOIF3YHtuHP5OZB+Z7YkmHIl4UUvHcVy5cWqUEHnvfPDwDIdg==
   dependencies:
-    "@jup-ag/crema-sdk" "2.0.7"
+    "@jup-ag/crema-sdk" "2.0.6"
     "@jup-ag/cykura-sdk" "0.1.25"
     "@jup-ag/cykura-sdk-core" "0.1.8"
     "@jup-ag/lifinity-sdk" "0.1.72"
-    "@jup-ag/math" "1.0.0-test.35"
+    "@jup-ag/math" "1.0.0-beta.26"
     "@jup-ag/whirlpool-sdk" "0.1.1"
     "@mercurial-finance/optimist" "0.1.4"
-    "@project-serum/anchor" "0.24.2"
+    "@project-serum/anchor" "0.23.0"
     "@project-serum/serum" "0.13.65"
     "@saberhq/stableswap-sdk" "1.13.6"
     "@solana/spl-token" "0.1.8"
@@ -235,10 +234,10 @@
     jsbi "4.3.0"
     promise-retry "2.0.1"
 
-"@jup-ag/crema-sdk@2.0.7":
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/@jup-ag/crema-sdk/-/crema-sdk-2.0.7.tgz#f9f19b07d6d32bd85eff9c8ba41c89b7a059cd42"
-  integrity sha512-EW1B36g2p1xZsXYLdY98pVP9yiI1viZBIIbfWZ9vVue1PDudsU8dNZXyjtnLbOBuRpT6QYecF/FTXcgLEjY7xg==
+"@jup-ag/crema-sdk@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@jup-ag/crema-sdk/-/crema-sdk-2.0.6.tgz#cb432379ca9c4998cb41b4f574244d0070e99365"
+  integrity sha512-jfCWywBVKXs6tyXbtcY5kWIbx+HE0O0k9qGGaR4Y8ffLjycEChMQ8TmddBn3ZAPDfgwCeJQ7eE5jxVq9hM6zBA==
   dependencies:
     "@saberhq/solana-contrib" "^1.12.66"
     "@saberhq/token-utils" "^1.12.66"
@@ -275,10 +274,10 @@
     "@solana/web3.js" "1.31.0"
     decimal.js "^10.3.1"
 
-"@jup-ag/math@1.0.0-test.35":
-  version "1.0.0-test.35"
-  resolved "https://registry.yarnpkg.com/@jup-ag/math/-/math-1.0.0-test.35.tgz#64963b21e6f15ada7e7f96670b5a7cee2c32209b"
-  integrity sha512-N31yo/WiMG+eXf2YK9XG+g//fzgkZAPk+ongdXtnMjJ4wHESaWi33sDxfpzEaj+uAL0LS3O8582sEQereBUhbw==
+"@jup-ag/math@1.0.0-beta.26":
+  version "1.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@jup-ag/math/-/math-1.0.0-beta.26.tgz#78945ecd3e72e0662c801d0b5ffdc021ee0a02c9"
+  integrity sha512-R7QmF9u0f+r7j9xH5DldoHHAr66/cGP8AiWC7Z3M2sK5bRSxuYW834/ZEhRmgEY42xmg+a7kQeBxaQnChF4bUg==
   dependencies:
     decimal.js "10.3.1"
     jsbi "4.3.0"
@@ -488,10 +487,10 @@
   resolved "https://registry.yarnpkg.com/@pedrouid/environment/-/environment-1.0.1.tgz#858f0f8a057340e0b250398b75ead77d6f4342ec"
   integrity sha512-HaW78NszGzRZd9SeoI3JD11JqY+lubnaOx7Pewj5pfjqWXOEATpeKIFb9Z4t2WBUK2iryiXX3lzWwmYWgUL0Ug==
 
-"@project-serum/anchor@0.24.2", "@project-serum/anchor@^0.24.2":
-  version "0.24.2"
-  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.24.2.tgz#a3c52a99605c80735f446ca9b3a4885034731004"
-  integrity sha512-0/718g8/DnEuwAidUwh5wLYphUYXhUbiClkuRNhvNoa+1Y8a4g2tJyxoae+emV+PG/Gikd/QUBNMkIcimiIRTA==
+"@project-serum/anchor@0.23.0", "@project-serum/anchor@~0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.23.0.tgz#2b2eb6b51601b073e8db26663aa2d6c2f2841771"
+  integrity sha512-LV2/ifZOJVFTZ4GbEloXln3iVfCvO1YM8i7BBCrUm4tehP7irMx4nr4/IabHWOzrQcQElsxSP/lb1tBp+2ff8A==
   dependencies:
     "@project-serum/borsh" "^0.2.5"
     "@solana/web3.js" "^1.36.0"
@@ -503,6 +502,7 @@
     cross-fetch "^3.1.5"
     crypto-hash "^1.3.0"
     eventemitter3 "^4.0.7"
+    find "^0.3.0"
     js-sha256 "^0.9.0"
     pako "^2.0.3"
     snake-case "^3.0.4"
@@ -569,10 +569,10 @@
     snake-case "^3.0.4"
     toml "^3.0.0"
 
-"@project-serum/anchor@~0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.23.0.tgz#2b2eb6b51601b073e8db26663aa2d6c2f2841771"
-  integrity sha512-LV2/ifZOJVFTZ4GbEloXln3iVfCvO1YM8i7BBCrUm4tehP7irMx4nr4/IabHWOzrQcQElsxSP/lb1tBp+2ff8A==
+"@project-serum/anchor@^0.24.2":
+  version "0.24.2"
+  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.24.2.tgz#a3c52a99605c80735f446ca9b3a4885034731004"
+  integrity sha512-0/718g8/DnEuwAidUwh5wLYphUYXhUbiClkuRNhvNoa+1Y8a4g2tJyxoae+emV+PG/Gikd/QUBNMkIcimiIRTA==
   dependencies:
     "@project-serum/borsh" "^0.2.5"
     "@solana/web3.js" "^1.36.0"
@@ -584,7 +584,6 @@
     cross-fetch "^3.1.5"
     crypto-hash "^1.3.0"
     eventemitter3 "^4.0.7"
-    find "^0.3.0"
     js-sha256 "^0.9.0"
     pako "^2.0.3"
     snake-case "^3.0.4"
@@ -818,6 +817,13 @@
   dependencies:
     eventemitter3 "^4.0.0"
 
+"@solana/wallet-adapter-base@^0.9.17":
+  version "0.9.17"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-base/-/wallet-adapter-base-0.9.17.tgz#b388fea0ec6da40e23342068a4cfa9be65dc8f63"
+  integrity sha512-YEkO04QndfRXb6psznMuRsw2YBHqVGxmuJgQskCHp2DAkHWPDNbKlv+Q4mOD2gfkUNHUMP8sTnwORhsIR3fQjQ==
+  dependencies:
+    eventemitter3 "^4.0.0"
+
 "@solana/wallet-adapter-bitkeep@^0.3.2":
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-bitkeep/-/wallet-adapter-bitkeep-0.3.12.tgz#205b71c5a390c4fc6851fc4c45010175a906ebbb"
@@ -910,12 +916,19 @@
     "@solana/wallet-adapter-base" "^0.9.16"
     "@solana/wallet-adapter-react" "^0.15.18"
 
-"@solana/wallet-adapter-react@^0.15.18", "@solana/wallet-adapter-react@^0.15.3":
+"@solana/wallet-adapter-react@^0.15.18":
   version "0.15.18"
   resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-react/-/wallet-adapter-react-0.15.18.tgz#7700362574c32fef25fb61314f7e0dfedb0f2fca"
   integrity sha512-CCcv9L8kn6WBO3FFQeX5GZf+a5CyPzULZYqiZam3uQ0zvx/TIdGYgfBJIDDwjQnTKHk+BaqUURA3rqzsLbINhA==
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.16"
+
+"@solana/wallet-adapter-react@^0.15.3":
+  version "0.15.19"
+  resolved "https://registry.yarnpkg.com/@solana/wallet-adapter-react/-/wallet-adapter-react-0.15.19.tgz#fa8f420ec6b6b7339ccd8e72bc17146f53df3d5b"
+  integrity sha512-8MEiirK1Fp7apMGFQU6OMZBvppjHwr0uwzE3iYDlG7gPkMPVVR0pruy2oeexSN0fw+S7gnorZJehgOGbptyHHA==
+  dependencies:
+    "@solana/wallet-adapter-base" "^0.9.17"
 
 "@solana/wallet-adapter-safepal@^0.5.2":
   version "0.5.11"
@@ -4414,7 +4427,7 @@ react-refresh@0.8.3:
 
 react@17.0.2:
   version "17.0.2"
-  resolved "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
   dependencies:
     loose-envify "^1.1.0"

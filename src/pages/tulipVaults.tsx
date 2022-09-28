@@ -1,14 +1,14 @@
 import { useNavigator } from "contexts/NavigatorProvider";
-import { Vault } from "components/TulipVault";
 import { NextPage } from "next";
 import Head from "next/head";
-import { tulip } from "@dappio-wonderland/navigator";
 import { useEffect, useState } from "react";
+import { tulip as protocol } from "@dappio-wonderland/navigator";
+import { Vault } from "components/TulipVault";
 
 export const TulipVaults: NextPage = (props) => {
   const { tulipVaults, raydiumPoolSetWithLpMintKey } = useNavigator();
   const [vaultsWithPool, setVaultsWithPool] = useState<
-    tulip.VaultInfoWrapper[]
+    protocol.VaultInfoWrapper[]
   >([]);
 
   useEffect(() => {

@@ -1,17 +1,11 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import {
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  TransactionSignature,
-} from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { notify } from "utils/notifications";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import useUserSOLBalanceStore from "stores/useUserSOLBalanceStore";
-import {
-  IFarmInfoWrapper,
-  IPoolInfoWrapper,
-  orca as protocol,
-} from "@dappio-wonderland/navigator";
+import { AnchorWallet } from "utils/anchorWallet";
+import * as anchor from "@project-serum/anchor";
+import { orca as protocol } from "@dappio-wonderland/navigator";
 import {
   AddLiquidityParams,
   GatewayBuilder,
@@ -21,9 +15,8 @@ import {
   SupportedProtocols,
   SwapParams,
   UnstakeParams,
+  WSOL,
 } from "@dappio-wonderland/gateway";
-import { AnchorWallet } from "utils/anchorWallet";
-import * as anchor from "@project-serum/anchor";
 
 interface FarmProps {
   farm: protocol.FarmInfoWrapper;
@@ -46,12 +39,10 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
   const pool = props.pool;
   const poolInfo = pool.poolInfo;
   useEffect(() => {
-    const getApr = async () => {
-      // NOTICE: We mocked LP price and reward price here just for demo
-      const aprs = await farm.getAprs(5, 1, 2);
-      return aprs.length > 1 ? aprs[1] : aprs[0];
-    };
-    getApr().then((apr) => setApr(apr));
+    // NOTICE: We mocked LP price and reward price here just for demo
+    const aprs = farm.getAprs(5, 1, 2);
+    const apr = aprs.length > 1 ? aprs[1] : aprs[0];
+    setApr(apr);
   }, []);
 
   const zapIn = useCallback(async () => {
@@ -70,14 +61,12 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       new AnchorWallet(wallet),
       anchor.AnchorProvider.defaultOptions()
     );
-    const zapInAmount = 10000; // USDC Amount
+    const zapInAmount = 10000; // WSOL Amount
 
-    // USDC to tokenA
+    // WSOL to tokenA
     const swapParams1: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
-      fromTokenMint: new PublicKey(
-        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-      ),
+      fromTokenMint: new PublicKey(WSOL),
       toTokenMint: poolInfo.tokenAMint,
       amount: zapInAmount,
       slippage: 1,
@@ -218,13 +207,11 @@ export const Farm: FC<FarmProps> = (props: FarmProps) => {
       slippage: 3,
     };
 
-    // tokenA to USDC
+    // tokenA to WSOL
     const swapParams2: SwapParams = {
       protocol: SupportedProtocols.Jupiter,
       fromTokenMint: poolInfo.tokenAMint,
-      toTokenMint: new PublicKey(
-        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" // USDC
-      ),
+      toTokenMint: new PublicKey(WSOL),
       amount: 0, // Notice: This amount needs to be updated later
       slippage: 10,
     };
