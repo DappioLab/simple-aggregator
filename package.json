@@ -40,6 +40,7 @@
     "typescript": "4.5.4"
   },
   "resolutions": {
-    "@jup-ag/core": "1.0.0-beta.26"
+    "@jup-ag/core": "1.0.0-beta.26",
+    "@solana/wallet-adapter-react": "0.15.18"
   }
 }
