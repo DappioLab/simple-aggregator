@@ -88,13 +88,19 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@dappio-wonderland/gateway@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@dappio-wonderland/gateway/-/gateway-0.2.5.tgz#fe8c6c6a1053b263c1aef998760f70ad9788c629"
-  integrity sha512-pXin51XZy9ehwNADFicWoAvPvWJoS66DR551NBRAHq12XNYFnSH5itIJY87YHN6hhIgFZBg5BAf2pBtAMj7eSA==
+"@dappio-wonderland/gateway-idls@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@dappio-wonderland/gateway-idls/-/gateway-idls-0.2.4.tgz#ecc352d5288c3a31388eaf15059372902905ef22"
+  integrity sha512-IqUkXU8pWo3ew5wzA+X2u1TA65SaY+/HnVI+1wsU14fd5S5cIE3MtVS5VaiipLyC9m6TewNg3zc+ff+kzTSn1g==
+
+"@dappio-wonderland/gateway@^0.2.14":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@dappio-wonderland/gateway/-/gateway-0.2.14.tgz#778d90e9af380c6891f37263cb434cfea093494e"
+  integrity sha512-tw1LVJ5DkwAhAKuBNFe5wfSwAAvkd2iSAWLyv987ypVg5F+S9UAX6BHBkbFM2pgKhL92RlxjsW2YUKVpdWbCVA==
   dependencies:
-    "@dappio-wonderland/navigator" "^0.2.5"
-    "@jup-ag/core" "^1.0.0-beta.26"
+    "@dappio-wonderland/gateway-idls" "^0.2.4"
+    "@dappio-wonderland/navigator" "^0.2.10"
+    "@jup-ag/core" "1.0.0-beta.26"
     "@project-serum/anchor" "^0.24.2"
     "@project-serum/borsh" "^0.2.5"
     "@project-serum/serum" "^0.13.61"
@@ -102,22 +108,22 @@
     "@solana/spl-token-v2" "npm:@solana/spl-token@0.2.0"
     js-sha256 "^0.9.0"
 
-"@dappio-wonderland/navigator@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@dappio-wonderland/navigator/-/navigator-0.2.5.tgz#c498dfbce4941399e4adce438789a0ed005259f6"
-  integrity sha512-paoT0Z4xGjAFffxcPZHCZYBVI3f+OuiN4HX0w80oJJNlY95fDpL+pp7WPAsmRRCgXDwfzykIN7rSFVbTFmPavA==
+"@dappio-wonderland/navigator@^0.2.10":
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/@dappio-wonderland/navigator/-/navigator-0.2.10.tgz#ccb5f2f4e6b378df91c2c783848c841416614a90"
+  integrity sha512-p97bQ32GuIKqt+spU25QeYO2oc/4DtVCO8oCCON7wHGfFTvaNaj+vr+J+bs+fggtuvcjnn69M6kDeEmcl8XXsw==
   dependencies:
     "@project-serum/borsh" "^0.2.2"
     "@project-serum/serum" "^0.13.61"
     "@solana/spl-token-v2" "npm:@solana/spl-token@0.2.0"
-    "@solana/web3.js" "^1.34.0"
+    "@solana/web3.js" "^1.63.0"
     "@switchboard-xyz/sbv2-lite" "^0.1.5"
     "@switchboard-xyz/switchboard-api" "^0.2.191"
     "@types/bn.js" "^5.1.0"
     axios "^0.27.2"
     buffer-layout "^1.2.2"
     graphql "^16.6.0"
-    graphql-request "^4.3.0"
+    graphql-request "^5.0.0"
     mocha "^10.0.0"
 
 "@eslint/eslintrc@^1.0.5":
@@ -155,6 +161,11 @@
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/logger" "^5.5.0"
     hash.js "1.1.7"
+
+"@graphql-typed-document-node/core@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
+  integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
 
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
@@ -212,7 +223,7 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@jup-ag/core@1.0.0-beta.26", "@jup-ag/core@^1.0.0-beta.26":
+"@jup-ag/core@1.0.0-beta.26":
   version "1.0.0-beta.26"
   resolved "https://registry.yarnpkg.com/@jup-ag/core/-/core-1.0.0-beta.26.tgz#fd2e637d982f809ad0373753e4f7e7d46c3a1ab0"
   integrity sha512-TaUbh6eriuc59wnbM58HS2ahQHn3P3TAwBjwlqOIF3YHtuHP5OZB+Z7YkmHIl4UUvHcVy5cWqUEHnvfPDwDIdg==
@@ -1018,7 +1029,7 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.34.0":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.32.0":
   version "1.62.1"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.62.1.tgz#b0f98a033086016741fd6335548e92262964ac48"
   integrity sha512-ylkYM7u3dmTrBDQ1rkHF9kQTkKO+C7TqUvTJ0CfAFKUkQhDLsK2JUARdhkhERmJRqou0kSNmPd1x78IMg+FdTw==
@@ -1043,6 +1054,27 @@
   version "1.61.1"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.61.1.tgz#183339352a69ef3c8db66ee804001ae511d46aea"
   integrity sha512-rGxK1N/c+bGuY7ehpsT6q1jBzQ+8cmd+rPf7pQbMz0e9aBxI+67c/lBxq+0jOlj19salkT79d8R/OO+JNDyLsg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
+    "@solana/buffer-layout" "^4.0.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.0.0"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    fast-stable-stringify "^1.0.0"
+    jayson "^3.4.4"
+    node-fetch "2"
+    rpc-websockets "^7.5.0"
+    superstruct "^0.14.2"
+
+"@solana/web3.js@^1.63.0":
+  version "1.64.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.64.0.tgz#b7f5a976976039a0161242e94d6e1224ab5d30f9"
+  integrity sha512-AcFaoy48GxSmzBryVwB88C/UPJd/UQa+nFrO/uPc8ww6RCjanZY2vEZxdfTZub+q1NMUckwXpPwF32jJLe7SPA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@noble/ed25519" "^1.7.0"
@@ -3100,11 +3132,12 @@ graceful-fs@^4.2.4:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
   integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
 
-graphql-request@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-4.3.0.tgz#b934e08fcae764aa2cdc697d3c821f046cb5dbf2"
-  integrity sha512-2v6hQViJvSsifK606AliqiNiijb1uwWp6Re7o0RTyH+uRTv/u7Uqm2g4Fjq/LgZIzARB38RZEvVBFOQOVdlBow==
+graphql-request@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-5.0.0.tgz#7504a807d0e11be11a3c448e900f0cc316aa18ef"
+  integrity sha512-SpVEnIo2J5k2+Zf76cUkdvIRaq5FMZvGQYnA4lUWYbc99m+fHh4CZYRRO/Ff4tCLQ613fzCm3SiDT64ubW5Gyw==
   dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
     cross-fetch "^3.1.5"
     extract-files "^9.0.0"
     form-data "^3.0.0"
