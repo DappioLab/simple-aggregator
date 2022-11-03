@@ -12,7 +12,7 @@
   "dependencies": {
     "@dappio-wonderland/gateway": "^0.2.14",
     "@dappio-wonderland/navigator": "^0.2.10",
-    "@heroicons/react": "^1.0.5",
+    "@heroicons/react": "^2.0.13",
     "@project-serum/anchor": "^0.24.2",
     "@solana/wallet-adapter-base": "^0.9.3",
     "@solana/wallet-adapter-react": "0.15.18",
